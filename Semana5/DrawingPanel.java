@@ -1,11 +1,13 @@
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,7 +16,8 @@ import java.io.IOException;
 /**
  * @author jricaur1 y pcorream2
  */
-public class DrawingPanel extends JPanel implements MouseListener {
+public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
+    private JButton bAceptar;
 
     public static final int W = 500;
     public static final int H = 500;
@@ -29,8 +32,8 @@ public class DrawingPanel extends JPanel implements MouseListener {
     public static final int BOTTOM = 4; // 0100
     public static final int TOP = 8; // 1000
 
-    static Point [] points;
-    static Edge [] lineSeg;
+    static Point[] points;
+    static Edge[] lineSeg;
 
     int x1 = -1;
     int y1 = -1;
@@ -44,7 +47,9 @@ public class DrawingPanel extends JPanel implements MouseListener {
      * Constructor
      */
     public DrawingPanel() {
+        add(getbAceptar());
         this.addMouseListener(this);
+        this.addKeyListener(this);
     }
 
     /**
@@ -101,15 +106,10 @@ public class DrawingPanel extends JPanel implements MouseListener {
             int y1 = lineSeg[i].getY1();
             int x2 = lineSeg[i].getX2();
             int y2 = lineSeg[i].getY2();
-            
-            g.drawLine(
-                toWindowX(x1), 
-                toWindowY(y1), 
-                toWindowX(x2), 
-                toWindowY(y2)
-                );
+
+            g.drawLine(toWindowX(x1), toWindowY(y1), toWindowX(x2), toWindowY(y2));
         }
-        
+
     }
 
     @Override
@@ -132,12 +132,87 @@ public class DrawingPanel extends JPanel implements MouseListener {
     public void mouseReleased(MouseEvent e) {
     }
 
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_W) {
+
+            this.transponer(1);
+        }
+        if (key == KeyEvent.VK_A) {
+
+            this.transponer(2);
+        }
+        if (key == KeyEvent.VK_S) {
+
+            this.transponer(3);
+        }
+        if (key == KeyEvent.VK_D) {
+
+            this.transponer(4);
+        }
+        if (key == KeyEvent.VK_Q) {
+
+            System.out.println("Rotar x2");
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
     private int toWindowX(int x) {
         return x + W / 2;
     }
 
     private int toWindowY(int y) {
         return H / 2 - y;
+    }
+
+    private JButton getbAceptar() {
+        bAceptar = new JButton("Aceptar");
+        // Acá es donde se le dice que escuche a las teclas
+        bAceptar.addKeyListener(this);
+        bAceptar.setBounds(10, 10, 100, 20);
+        return bAceptar;
+    }
+
+    public void transponer(int direction) {
+        // Derecha
+        if (direction == 4) {
+            for (int i = 0; i < points.length; i++) {
+                points[i].setX((points[i].getX() + 20));
+            }
+            repaint();
+        }
+        // Abajo
+        else if (direction == 2) {
+            for (int i = 0; i < points.length; i++) {
+                points[i].setX((points[i].getX() - 20));
+            }
+            repaint();
+        }
+        // Izquierda
+        else if (direction == 3) {
+            for (int i = 0; i < points.length; i++) {
+                points[i].setY((points[i].getY() - 20));
+            }
+            repaint();
+        }
+        // Arriba
+        else if (direction == 1) {
+            for (int i = 0; i < points.length; i++) {
+                points[i].setY((points[i].getY() + 20));
+            }
+            repaint();
+        }
     }
 
     /**
@@ -158,6 +233,10 @@ public class DrawingPanel extends JPanel implements MouseListener {
         return code;
     }
 
+    public void setPoints() {
+
+    }
+
     /**
      * Main program
      * 
@@ -165,48 +244,49 @@ public class DrawingPanel extends JPanel implements MouseListener {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        
+
         File file = new File(args[0]);
         BufferedReader br = new BufferedReader(new FileReader(file));
-        String [] xy = new String[2];
+        String[] xy = new String[2];
 
         String currentLine = br.readLine();
         int qPoints = Integer.parseInt(currentLine);
         points = new Point[qPoints];
-            for (int i = 0; i < qPoints; i++) {
-                currentLine = br.readLine();
-                xy = currentLine.split(" ");
-                int x = Integer.parseInt(xy[0]);
-                int y = Integer.parseInt(xy[1]);
-                points[i] = new Point(x, y);
-            }
+        for (int i = 0; i < qPoints; i++) {
             currentLine = br.readLine();
-            int qLines = Integer.parseInt(currentLine);
-            lineSeg = new Edge[qLines];
-            String[] edges = new String[2];
-            for (int i = 0; i < qLines; i++) {
-                currentLine = br.readLine();
-                edges = currentLine.split(" ");
-                int eg1 = Integer.parseInt(edges[0]);
-                int eg2 = Integer.parseInt(edges[1]);
-                lineSeg[i] = new Edge(points[eg1], points[eg2]);
-            }
-        
-        
+            xy = currentLine.split(" ");
+            int x = Integer.parseInt(xy[0]);
+            int y = Integer.parseInt(xy[1]);
+            points[i] = new Point(x, y);
+        }
+        currentLine = br.readLine();
+        int qLines = Integer.parseInt(currentLine);
+        lineSeg = new Edge[qLines];
+        String[] edges = new String[2];
+        for (int i = 0; i < qLines; i++) {
+            currentLine = br.readLine();
+            edges = currentLine.split(" ");
+            int eg1 = Integer.parseInt(edges[0]);
+            int eg2 = Integer.parseInt(edges[1]);
+            lineSeg[i] = new Edge(points[eg1], points[eg2]);
+        }
+
         // Crear un nuevo Frame
+
         JFrame frame = new JFrame("Drawing Panel");
         // Al cerrar el frame, termina la ejecución de este programa
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Agregar un JPanel que se llama Points (esta clase)
         DrawingPanel clip = new DrawingPanel();
         frame.add(clip);
-        //frame.addMouseListener(ev);
+        // frame.addMouseListener(ev);
         // Asignarle tamaño
         frame.setSize(W, H);
         // Poner el frame en el centro de la pantalla
         frame.setLocationRelativeTo(null);
         // Mostrar el frame
         frame.setVisible(true);
+        br.close();
     }
 
 }
