@@ -152,9 +152,11 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
 
             this.transponer(4);
         }
-        if (key == KeyEvent.VK_Q) {
-
-            System.out.println("Rotar x2");
+        if (key == KeyEvent.VK_I) {
+            this.escalar(1.1);
+        }
+        if (key == KeyEvent.VK_K) {
+            this.escalar(0.9);
         }
     }
 
@@ -182,6 +184,16 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
         bAceptar.addKeyListener(this);
         bAceptar.setBounds(10, 10, 100, 20);
         return bAceptar;
+    }
+
+    public void escalar(double escalar) {
+        for (int i = 0; i < points.length; i++){
+            double xAux = points[i].getX();
+            double yAux = points[i].getY();
+            points[i].setX((int)(xAux * escalar));
+            points[i].setY((int)(yAux * escalar));
+        }
+        repaint();
     }
 
     public void transponer(int direction) {
