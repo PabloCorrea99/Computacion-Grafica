@@ -158,6 +158,12 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
         if (key == KeyEvent.VK_K) {
             this.escalar(0.9);
         }
+        if (key == KeyEvent.VK_Q) {
+            this.rotar(false);
+        }
+        if (key == KeyEvent.VK_E) {
+            this.rotar(true);
+        }
     }
 
     @Override
@@ -192,6 +198,22 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
             double yAux = points[i].getY();
             points[i].setX((int)(xAux * escalar));
             points[i].setY((int)(yAux * escalar));
+        }
+        repaint();
+    }
+
+    public void rotar(boolean signo){
+        double angle = 5;
+        if (!signo){
+            angle = -5; 
+        }
+        for (int i = 0; i < points.length; i++){
+            int xTemp = points[i].getX();
+            int yTemp = points[i].getY();
+            double xAux = xTemp * Math.cos(angle) - yTemp * Math.sin(angle);
+            double yAux = xTemp * Math.sin(angle) + yTemp * Math.cos(angle);
+            points[i].setX((int)(xAux));
+            points[i].setY((int)(yAux));
         }
         repaint();
     }
