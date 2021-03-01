@@ -1,12 +1,11 @@
 
 public class Point {
     
-    int point[] = new int[3];
+    int point[] = new int[2];
     
-    public Point(int x, int y, int z){
+    public Point(int x, int y){
         point[0] = x;
         point[1] = y;
-        point[2] = z;
     }
 
     public int[] getPoint() {
@@ -21,19 +20,11 @@ public class Point {
         return point[1];
     }
 
-    public int getZ() {
-        return point[2];
-    }
-
     public void setX(int x) {
         point[0] = x;
     }
 
     public void setY(int y) {
         point[1] = y;
-    }
-
-    public void setz(int z) {
-        point[2] = z;
     }
 }

@@ -16,8 +16,8 @@ import java.io.IOException;
 /**
  * @author jricaur1 y pcorream2
  */
-public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
-    private JButton bAceptar;
+public class DrawingPanel extends JPanel implements MouseListener {
+    // private JButton bAceptar;
 
     public static final int W = 500;
     public static final int H = 500;
@@ -47,9 +47,9 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
      * Constructor
      */
     public DrawingPanel() {
-        add(getbAceptar());
+        // add(getbAceptar());
         this.addMouseListener(this);
-        this.addKeyListener(this);
+        //this.addKeyListener(this);
     }
 
     /**
@@ -131,7 +131,7 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
+/*
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -175,6 +175,7 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
+*/
 
     private int toWindowX(int x) {
         return x + W / 2;
@@ -183,7 +184,7 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
     private int toWindowY(int y) {
         return H / 2 - y;
     }
-
+/*
     private JButton getbAceptar() {
         bAceptar = new JButton("Aceptar");
         // Acá es donde se le dice que escuche a las teclas
@@ -191,7 +192,8 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
         bAceptar.setBounds(10, 10, 100, 20);
         return bAceptar;
     }
-
+*/
+/*
     public void escalar(double escalar) {
         for (int i = 0; i < points.length; i++){
             double xAux = points[i].getX();
@@ -201,7 +203,8 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
         }
         repaint();
     }
-
+*/
+/*
     public void rotar(boolean signo){
         double angle = 5;
         if (!signo){
@@ -217,7 +220,8 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
         }
         repaint();
     }
-
+*/
+/*
     public void transponer(int direction) {
         // Derecha
         if (direction == 4) {
@@ -248,7 +252,7 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
             repaint();
         }
     }
-
+*/
     /**
      * 
      * @param x x coordinate
@@ -279,19 +283,30 @@ public class DrawingPanel extends JPanel implements MouseListener, KeyListener {
      */
     public static void main(String[] args) throws IOException {
 
-        File file = new File(args[0]);
+        File file = new File("./casita3D.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
-        String[] xy = new String[2];
+        String[] xyz = new String[3];
 
         String currentLine = br.readLine();
         int qPoints = Integer.parseInt(currentLine);
         points = new Point[qPoints];
         for (int i = 0; i < qPoints; i++) {
             currentLine = br.readLine();
-            xy = currentLine.split(" ");
-            int x = Integer.parseInt(xy[0]);
-            int y = Integer.parseInt(xy[1]);
-            points[i] = new Point(x, y);
+            xyz = currentLine.split(" ");
+            int x = Integer.parseInt(xyz[0]);
+            int y = Integer.parseInt(xyz[1]);
+            int z = Integer.parseInt(xyz[2]);
+            double d = -1000;
+            double xp = x/(z/d);
+            double yp = y/(z/d);
+            System.out.println(xp);
+            System.out.println(yp);
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println("============");
+
+            points[i] = new Point((int)xp, (int)yp);
+
         }
         currentLine = br.readLine();
         int qLines = Integer.parseInt(currentLine);
