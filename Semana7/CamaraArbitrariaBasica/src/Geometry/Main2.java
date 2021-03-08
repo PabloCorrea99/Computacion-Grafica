@@ -224,7 +224,7 @@ public class Main2 extends JPanel {
 
         // Read the file with the object description
         //dc.readObjectDescription("objeto3D.txt");
-        m2.readObjectDescription("casita3D.txt");
+        m2.readObjectDescription("CamaraArbitrariaBasica/casita3D.txt");
 
         // Create a new Frame
         JFrame frame = new JFrame("Wire Frame Object");
@@ -233,7 +233,7 @@ public class Main2 extends JPanel {
         // Add a panel called Main2
         frame.add(m2);        
         // Asignarle tamaño
-        frame.setSize(DibujarCasita3D.FRAME_WIDTH, DibujarCasita3D.FRAME_HEIGHT);
+        frame.setSize(600, 400);
         // Put the frame in the middle of the window
         frame.setLocationRelativeTo(null);
         // Show the frame
